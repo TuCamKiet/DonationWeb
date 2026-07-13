@@ -23,6 +23,7 @@ export interface Product {
   stock: number;
   featured?: boolean;
   storySlug?: string;
+  imageUrl?: string;
 }
 
 export interface Story {
@@ -35,6 +36,7 @@ export interface Story {
   excerpt: string;
   body: string[];
   art: Art;
+  imageUrl?: string;
 }
 
 export interface ImpactStat {

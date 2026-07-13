@@ -11,7 +11,7 @@ const fadeUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -20,7 +20,7 @@ const slideLeft = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -29,7 +29,7 @@ const slideRight = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -80,11 +80,6 @@ export default function Stories() {
           {stories && (
             <div className="stories">
               {stories.map((s, i) => {
-                const imgUrl =
-                  s.kind === "school"
-                    ? "https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?auto=format&fit=crop&q=80&w=1200"
-                    : "https://images.unsplash.com/photo-1583417319070-52a17688cb64?auto=format&fit=crop&q=80&w=1200";
-
                 const isRev = i % 2 !== 0;
 
                 return (
@@ -106,7 +101,7 @@ export default function Stories() {
                           art={s.art}
                           ratio="4 / 3"
                           className="feature__img"
-                          imgUrl={imgUrl}
+                          imgUrl={s.imageUrl}
                         />
                       </motion.div>
                       <motion.div

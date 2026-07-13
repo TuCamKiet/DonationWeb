@@ -8,6 +8,7 @@ interface Props {
   className?: string;
   label?: string;
   imgUrl?: string;
+  style?: React.CSSProperties;
 }
 
 /**
@@ -21,6 +22,7 @@ export default function Photo({
   className = "",
   label,
   imgUrl,
+  style,
 }: Props) {
   const [imgError, setImgError] = useState(false);
 
@@ -28,7 +30,7 @@ export default function Photo({
     return (
       <div
         className={`photo photo--image ${rounded ? "photo--rounded" : ""} ${className}`}
-        style={{ aspectRatio: ratio }}
+        style={{ aspectRatio: ratio , ...style }}
       >
         <img
           src={imgUrl}
@@ -46,6 +48,7 @@ export default function Photo({
       style={{
         aspectRatio: ratio,
         background: `linear-gradient(135deg, ${art.from}, ${art.to})`,
+        ...style,
       }}
       role="img"
       aria-label={art.realPhotoNote ?? label ?? "Hình minh hoạ"}

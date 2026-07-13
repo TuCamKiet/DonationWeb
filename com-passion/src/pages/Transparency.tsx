@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion';
 import { api } from '../lib/api';
+import ReportCard from '../components/ReportCard';
 import { useApi } from '../lib/useApi';
-import { formatVND } from '../data/types';
 import CountUp from '../components/CountUp';
-import { Loading, ErrorNote } from '../components/Status';
+import { ErrorNote } from '../components/Status';
 import { Skeleton, SkeletonText } from '../components/Skeleton';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 const staggerContainer = {
@@ -97,53 +97,7 @@ export default function Transparency() {
           {reportsState.data && (
             <motion.div className="reports" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
               {reportsState.data.map((r) => (
-                <motion.article key={r.id} variants={fadeUp} className="report card">
-                  <header className="report__head">
-                    <div>
-                      <span className="chip chip--green">{r.period}</span>
-                      <h3>{r.title}</h3>
-                      <p className="muted">{r.summary}</p>
-                    </div>
-                    <div className="report__total">
-                      <span className="muted">Tổng dòng tiền</span>
-                      <strong>{formatVND(r.totalRaised)}</strong>
-                    </div>
-                  </header>
-
-                  <div className="report__bar" role="img" aria-label="Phân bổ dòng tiền">
-                    {r.allocations.map((a) => (
-                      <motion.span
-                        initial={{ flex: 0 }}
-                        whileInView={{ flex: a.amount }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        key={a.label}
-                        className="report__seg"
-                        style={{ background: a.color }}
-                        title={`${a.label}: ${formatVND(a.amount)}`}
-                      />
-                    ))}
-                  </div>
-
-                  <ul className="report__legend">
-                    {r.allocations.map((a) => (
-                      <li key={a.label}>
-                        <span className="dot" style={{ background: a.color }} />
-                        <span>{a.label}</span>
-                        <strong>{formatVND(a.amount)}</strong>
-                        <span className="muted">
-                          {Math.round((a.amount / r.totalRaised) * 100)}%
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <footer className="report__foot">
-                    <a className="btn btn--ghost interactive" href="#" onClick={(e) => e.preventDefault()}>
-                      🧾 {r.invoiceLabel}
-                    </a>
-                  </footer>
-                </motion.article>
+                <ReportCard key={r.id} report={r} variants={fadeUp} />
               ))}
             </motion.div>
           )}

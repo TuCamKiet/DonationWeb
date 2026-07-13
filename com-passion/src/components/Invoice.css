@@ -1,0 +1,241 @@
+/* 
+  Invoice.css 
+  Provides styles for the printable invoice template.
+*/
+
+/* Hide the wrapper entirely on screen. 
+   react-to-print will clone this node and print it, so it will show up perfectly in the print dialog. */
+@media screen {
+  .invoice-wrapper {
+    display: none;
+  }
+}
+
+/* Print-specific styles */
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm; /* standard A4 print margin */
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  .invoice-wrapper {
+    display: block !important;
+    width: 100%;
+    background: white;
+    color: #1a1a1a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+  }
+
+  .invoice-container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+
+  .invoice-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-icon {
+    font-size: 2.5rem;
+  }
+
+  .logo-text h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2a3a31; /* dark green */
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+  }
+
+  .invoice-meta {
+    text-align: right;
+  }
+
+  .invoice-meta h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2a3a31;
+    text-transform: uppercase;
+  }
+
+  .invoice-meta p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #444;
+  }
+
+  /* Divider */
+  .invoice-divider {
+    border: none;
+    border-top: 2px solid #e0e0e0;
+    margin: 2rem 0;
+  }
+
+  /* Typography */
+  .invoice-wrapper h3 {
+    font-size: 1.1rem;
+    color: #2a3a31;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  /* Summary Box */
+  .invoice-summary {
+    margin-bottom: 2.5rem;
+  }
+
+  .invoice-summary p {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .total-box {
+    background: #f7fbfa; /* very light green */
+    border: 1px solid #cce1d6;
+    padding: 1.25rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total-box span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .total-box strong {
+    font-size: 1.5rem;
+    color: #3a8062; /* primary green */
+  }
+
+  /* Details Table */
+  .invoice-details {
+    margin-bottom: 3rem;
+  }
+
+  .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .invoice-table th,
+  .invoice-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+  }
+
+  .invoice-table th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+    color: #444;
+  }
+
+  .text-right {
+    text-align: right !important;
+  }
+
+  .color-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .invoice-table tfoot td {
+    border-top: 2px solid #333;
+    border-bottom: none;
+    font-size: 1.05rem;
+    padding-top: 1.5rem;
+  }
+
+  /* Footer */
+  .invoice-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4rem;
+  }
+
+  .thank-you {
+    width: 50%;
+    font-size: 0.9rem;
+    color: #555;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .signature-area {
+    width: 40%;
+    text-align: center;
+  }
+
+  .location-date {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .role {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .signature-space {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .stamp {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 3px solid rgba(58, 128, 98, 0.4);
+    color: rgba(58, 128, 98, 0.8);
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    transform: rotate(-10deg);
+    border-radius: 4px;
+    letter-spacing: 2px;
+    user-select: none;
+  }
+
+  .name {
+    font-size: 1.05rem;
+  }
+}

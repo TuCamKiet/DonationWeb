@@ -30,6 +30,7 @@ class ProductOut(CamelModel):
     stock: int
     featured: bool = False
     story_slug: str | None = None
+    image_url: str | None = None
 
 
 class StoryOut(CamelModel):
@@ -42,12 +43,13 @@ class StoryOut(CamelModel):
     excerpt: str
     body: list[str]
     art: Art
+    image_url: str | None = None
 
 
 class ImpactStatOut(CamelModel):
     key: str
     label: str
-    value: int
+    value: float
     suffix: str | None = None
     prefix: str | None = None
     emoji: str

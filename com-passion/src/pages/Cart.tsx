@@ -11,7 +11,7 @@ const donationOptions = [0, 10000, 20000, 50000];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 const staggerContainer = {
@@ -100,7 +100,7 @@ export default function Cart() {
           <motion.div className="cart__lines" initial="hidden" animate="visible" variants={staggerContainer}>
             {lines.map((l) => (
               <motion.div key={l.product.id} variants={fadeUp} className="cline card">
-                <Photo art={l.product.art} ratio="1 / 1" className="cline__img" />
+                <Photo art={l.product.art} ratio="1 / 1" className="cline__img" imgUrl={l.product.imageUrl} />
                 <div className="cline__info">
                   <Link to={`/san-pham/${l.product.slug}`} className="cline__name interactive">{l.product.name}</Link>
                   <span className="muted">{l.product.maker} · {l.product.region}</span>

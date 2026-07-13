@@ -27,6 +27,7 @@ PRODUCTS = [
         "stock": 18,
         "featured": True,
         "story_slug": "co-hlan-nguoi-giu-nghe-dan",
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/mqfpyk4dottb0tapn4zn",
     },
     {
         "id": "p2",
@@ -44,6 +45,7 @@ PRODUCTS = [
         "stock": 12,
         "featured": True,
         "story_slug": "chu-tu-va-ganh-hang-dem",
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/dlfxoxs32wqpbv8msrdb",
     },
     {
         "id": "p3",
@@ -61,6 +63,7 @@ PRODUCTS = [
         "stock": 25,
         "featured": True,
         "story_slug": "co-hlan-nguoi-giu-nghe-dan",
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/bndm7riudzr1pntnjrfl",
     },
     {
         "id": "p4",
@@ -78,6 +81,7 @@ PRODUCTS = [
         "stock": 9,
         "featured": False,
         "story_slug": "co-hlan-nguoi-giu-nghe-dan",
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/rpebxyfjpsmnkwxwjyx6",
     },
     {
         "id": "p5",
@@ -95,6 +99,7 @@ PRODUCTS = [
         "stock": 40,
         "featured": False,
         "story_slug": "chu-tu-va-ganh-hang-dem",
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/d8lbeoxym8m74fteipcq",
     },
     {
         "id": "p6",
@@ -112,6 +117,7 @@ PRODUCTS = [
         "stock": 6,
         "featured": False,
         "story_slug": "co-hlan-nguoi-giu-nghe-dan",
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/eb8rgcpvgiu94xdv62dc",
     },
     {
         "id": "p7",
@@ -129,6 +135,7 @@ PRODUCTS = [
         "stock": 20,
         "featured": False,
         "story_slug": "ba-sau-va-chiec-non-co",
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/etyeumrwia6nshjmw0d8",
     },
     {
         "id": "p8",
@@ -146,6 +153,7 @@ PRODUCTS = [
         "stock": 15,
         "featured": False,
         "story_slug": "chi-mai-va-soi-coi-nga-son",
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/kkfhd6vvoaicmahkmydm",
     },
 ]
 
@@ -164,6 +172,7 @@ STORIES = [
             "Mỗi chiếc giỏ bạn mua giúp cô có thêm lý do để ngồi xuống, tiếp tục đan, và truyền lại nghề cho lớp trẻ trong buôn.",
         ],
         "art": {"from": "#d9b26f", "to": "#b88a4a", "emoji": "👵", "realPhotoNote": "Chân dung cô H’Lan đang đan mây trước hiên nhà, ánh sáng sáng sớm"},
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/dgjgv5osrlmfxghr3cdn",
     },
     {
         "id": "s2",
@@ -179,6 +188,7 @@ STORIES = [
             "Thay vì phải tìm đến tận nơi chú ngồi bán, bạn chỉ cần đặt một chiếc giỏ trên web. Với chú, đó là một đêm được về sớm hơn, ngủ ngon hơn.",
         ],
         "art": {"from": "#cfe3d6", "to": "#3a8062", "emoji": "👴", "realPhotoNote": "Chú Tư bên gánh hàng rong buổi đêm, đèn vàng ấm"},
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/xrzozbxces7vs5mngfwr",
     },
     {
         "id": "s3",
@@ -194,6 +204,7 @@ STORIES = [
             "Mỗi đơn hàng của bạn được ghi lại minh bạch, và một phần được chuyển thẳng thành những bữa ăn như thế này.",
         ],
         "art": {"from": "#fbe7d7", "to": "#e07a3f", "emoji": "🍱", "realPhotoNote": "Các em nhỏ 8–10 tuổi vùng cao đang ăn trưa ở trường, khung cảnh ấm áp"},
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/gzxqsmtek6bigchbt6c3",
     },
     {
         "id": "s4",
@@ -209,6 +220,7 @@ STORIES = [
             "Tiền bán nón giúp bà tự lo thuốc thang, không phải phiền tới con cháu — điều bà xem là niềm tự hào lớn nhất của tuổi già.",
         ],
         "art": {"from": "#f7efdc", "to": "#b88a4a", "emoji": "👒", "realPhotoNote": "Bà Sáu ngồi đan nón bên hiên, ánh nắng chiều xiên qua đồng cỏ bàng"},
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/jtwwtqtb3at7tiqtk5dm",
     },
     {
         "id": "s5",
@@ -224,6 +236,7 @@ STORIES = [
             "Giờ xưởng nhỏ của chị có thêm ba chị em trong xóm cùng làm. “Chỉ mong nghề cói không dừng lại ở đời mẹ tôi,” chị nói.",
         ],
         "art": {"from": "#eef5ef", "to": "#c45f2e", "emoji": "🧵", "realPhotoNote": "Chị Mai bên khung dệt cói, những cuộn cói xếp sau lưng"},
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/phqqg8qsh21r1cu7ll7y",
     },
     {
         "id": "s6",
@@ -239,6 +252,7 @@ STORIES = [
             "“Có em đọc xong còn kể lại cho ba mẹ nghe — nhiều phụ huynh không biết chữ,” cô giáo phụ trách kể. Một chiếc giỏ bạn mua hôm nay có thể là một cuốn sách mới trên kệ ngày mai.",
         ],
         "art": {"from": "#cfe3d6", "to": "#3a8062", "emoji": "📚", "realPhotoNote": "Các em nhỏ ngồi đọc sách quanh kệ gỗ trong góc lớp học"},
+        "image_url": "https://res.cloudinary.com/c36upord/image/upload/f_auto,q_auto/bskellhx9zcmddkgx2ap",
     },
 ]
 

@@ -20,7 +20,7 @@ const fadeUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -72,9 +72,19 @@ export default function Home() {
               </Link>
             </motion.div>
             <motion.div variants={fadeUp} className="hero__trust">
-              <span>🤲 14 nghệ nhân</span>
-              <span>🍱 5.400 bữa trưa</span>
-              <span>🧾 Hoá đơn công khai</span>
+              {statsState.loading ? (
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <Skeleton style={{ width: '120px', height: '24px', borderRadius: '4px' }} />
+                  <Skeleton style={{ width: '150px', height: '24px', borderRadius: '4px' }} />
+                  <Skeleton style={{ width: '130px', height: '24px', borderRadius: '4px' }} />
+                </div>
+              ) : (
+                <>
+                  <span>🤲 {statsState.data?.find(s => s.key === 'artisans')?.value || 14} nghệ nhân</span>
+                  <span>🍱 {(statsState.data?.find(s => s.key === 'meals')?.value || 5400).toLocaleString('vi-VN')} bữa trưa</span>
+                  <span>🧾 Hoá đơn công khai</span>
+                </>
+              )}
             </motion.div>
           </motion.div>
 
@@ -82,7 +92,7 @@ export default function Home() {
             className="hero__art"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as const, delay: 0.2 }}
           >
             <Photo
               art={{
@@ -93,16 +103,30 @@ export default function Home() {
                   "Ảnh cô chú vùng cao bên những chiếc giỏ đan tay",
               }}
               ratio="4 / 5"
-              imgUrl="https://images.unsplash.com/photo-1528181304811-beb53bc525fd?auto=format&fit=crop&q=80&w=1200"
+              imgUrl={featuredState.data?.find(p => p.id === 'p1')?.imageUrl}
             />
             <motion.div
               className="hero__floatcard card"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.6 }}
+              style={{
+                background: "var(--cream)",
+                boxShadow: "0 12px 40px rgba(46, 107, 79, 0.2)",
+                border: "1px solid var(--clay-200)",
+              }}
             >
-              <strong>86 triệu₫</strong>
-              <span className="muted">đã tích luỹ cho cộng đồng</span>
+              {statsState.loading ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <Skeleton style={{ width: '100px', height: '28px', borderRadius: '4px' }} />
+                  <Skeleton style={{ width: '160px', height: '16px', borderRadius: '4px' }} />
+                </div>
+              ) : (
+                <>
+                  <strong style={{ color: "var(--green-800)" }}>{statsState.data?.find(s => s.key === 'funds')?.value || 86}{statsState.data?.find(s => s.key === 'funds')?.suffix || " triệu₫"}</strong>
+                  <span className="muted" style={{ color: "var(--clay-700)" }}>{statsState.data?.find(s => s.key === 'funds')?.label?.toLowerCase() || "đã tích luỹ cho cộng đồng"}</span>
+                </>
+              )}
             </motion.div>
           </motion.div>
         </div>
@@ -303,18 +327,13 @@ export default function Home() {
               viewport={{ once: true, margin: "-50px" }}
             >
               {storiesState.data.map((s) => {
-                const imgUrl =
-                  s.kind === "school"
-                    ? "https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?auto=format&fit=crop&q=80&w=800"
-                    : "https://images.unsplash.com/photo-1583417319070-52a17688cb64?auto=format&fit=crop&q=80&w=800";
-
                 return (
                   <motion.div key={s.id} variants={fadeUp}>
                     <Link
                       to={`/cau-chuyen/${s.slug}`}
                       className="story-card interactive"
                     >
-                      <Photo art={s.art} ratio="4 / 3" imgUrl={imgUrl} />
+                      <Photo art={s.art} ratio="4 / 3" imgUrl={s.imageUrl} />
                       <div className="story-card__body">
                         <span
                           className={`chip ${s.kind === "school" ? "chip--clay" : "chip--green"}`}

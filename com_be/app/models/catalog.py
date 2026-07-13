@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import JSON, Boolean, Date, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Date, Integer, Float, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -28,6 +28,7 @@ class Product(Base):
     stock: Mapped[int] = mapped_column(Integer, default=0)
     featured: Mapped[bool] = mapped_column(Boolean, default=False)
     story_slug: Mapped[str | None] = mapped_column(String, nullable=True)
+    image_url: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
 class Story(Base):
@@ -42,6 +43,7 @@ class Story(Base):
     excerpt: Mapped[str] = mapped_column(Text)
     body: Mapped[list] = mapped_column(JSONVariant)
     art: Mapped[dict] = mapped_column(JSONVariant)
+    image_url: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
 class ImpactStat(Base):
@@ -49,7 +51,7 @@ class ImpactStat(Base):
 
     key: Mapped[str] = mapped_column(String, primary_key=True)
     label: Mapped[str] = mapped_column(String)
-    value: Mapped[int] = mapped_column(Integer)
+    value: Mapped[float] = mapped_column(Float)
     suffix: Mapped[str | None] = mapped_column(String, nullable=True)
     prefix: Mapped[str | None] = mapped_column(String, nullable=True)
     emoji: Mapped[str] = mapped_column(String)

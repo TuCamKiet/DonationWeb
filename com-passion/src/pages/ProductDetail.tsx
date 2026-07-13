@@ -12,7 +12,7 @@ import { SkeletonProductDetail } from '../components/Skeleton';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } }
 };
 
 const staggerContainer = {
@@ -103,7 +103,7 @@ export default function ProductDetail() {
           <div className="pdp">
             <motion.div variants={fadeUp} className="pdp__media">
               <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.4 }}>
-                <Photo art={product.art} ratio="1 / 1" style={{ borderRadius: "var(--radius-lg)" }} />
+                <Photo art={product.art} ratio="1 / 1" style={{ borderRadius: "var(--radius-lg)" }} imgUrl={product.imageUrl} />
               </motion.div>
             </motion.div>
 
@@ -178,7 +178,7 @@ export default function ProductDetail() {
               className="pdp-story__inner"
             >
               <motion.div variants={fadeUp}>
-                <Photo art={story.art} ratio="4 / 3" className="pdp-story__img" style={{ borderRadius: "var(--radius-lg)" }} />
+                <Photo art={story.art} ratio="4 / 3" className="pdp-story__img" style={{ borderRadius: "var(--radius-lg)" }} imgUrl={story.imageUrl} />
               </motion.div>
               <motion.div variants={staggerContainer}>
                 <motion.span variants={fadeUp} className="eyebrow">Câu chuyện đằng sau</motion.span>

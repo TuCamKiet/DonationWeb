@@ -9,7 +9,7 @@ import { SkeletonStoryDetail } from '../components/Skeleton';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 const staggerContainer = {
@@ -84,7 +84,7 @@ export default function StoryDetail() {
       </motion.section>
 
       <motion.section className="container" initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: 0.2 }}>
-        <Photo art={story.art} ratio="16 / 9" className="storyhero__img" />
+        <Photo art={story.art} ratio="16 / 9" className="storyhero__img" imgUrl={story.imageUrl} />
       </motion.section>
 
       <section className="section storybody">
@@ -119,7 +119,7 @@ export default function StoryDetail() {
             <motion.div variants={fadeUp} className="grid cols-2">
               {others.map((s) => (
                 <Link key={s.id} to={`/cau-chuyen/${s.slug}`} className="story-card story-card--row interactive">
-                  <Photo art={s.art} ratio="1 / 1" className="story-card__thumb" />
+                  <Photo art={s.art} ratio="1 / 1" className="story-card__thumb" imgUrl={s.imageUrl} />
                   <div className="story-card__body">
                     <h3>{s.title}</h3>
                     <p className="muted">{s.excerpt}</p>

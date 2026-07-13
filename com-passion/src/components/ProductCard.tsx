@@ -11,7 +11,7 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <article className={`pcard ${isOutOfStock ? 'is-empty' : ''}`}>
       <Link to={isOutOfStock ? '#' : `/san-pham/${product.slug}`} className="pcard__media" onClick={(e) => isOutOfStock && e.preventDefault()}>
-        <Photo art={product.art} ratio="1 / 1" />
+        <Photo art={product.art} ratio="1 / 1" imgUrl={product.imageUrl} />
         {isOutOfStock ? (
           <span className="chip pcard__tag" style={{ background: 'var(--text-soft)', color: '#fff' }}>Tạm hết hàng</span>
         ) : (
