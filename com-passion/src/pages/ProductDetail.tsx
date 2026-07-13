@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { api, ApiError } from '../lib/api';
@@ -220,3 +220,4 @@ export default function ProductDetail() {
     </motion.div>
   );
 }
+

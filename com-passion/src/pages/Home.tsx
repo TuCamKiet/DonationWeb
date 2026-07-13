@@ -66,7 +66,7 @@ export default function Home() {
               </Link>
               <Link
                 to="/cau-chuyen"
-                className="btn btn--ghost btn--lg interactive"
+                className="btn btn--light btn--lg interactive"
               >
                 Nghe câu chuyện
               </Link>
@@ -150,7 +150,7 @@ export default function Home() {
             </p>
           </div>
           <motion.div
-            className="grid cols-3"
+            className="grid cols-3 mission__grid"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -311,7 +311,7 @@ export default function Home() {
             <h2>Đằng sau mỗi chiếc giỏ là một con người</h2>
           </motion.div>
           {storiesState.loading && (
-            <div className="grid cols-3">
+            <div className="grid cols-3 story__grid">
               {Array.from({ length: 3 }).map((_, i) => (
                 <SkeletonCard key={i} />
               ))}
@@ -320,7 +320,7 @@ export default function Home() {
           {storiesState.error && <ErrorNote message={storiesState.error} />}
           {storiesState.data && (
             <motion.div
-              className="grid cols-3"
+              className="grid cols-3 story__grid"
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"

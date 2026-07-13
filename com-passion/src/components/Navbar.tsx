@@ -58,7 +58,13 @@ export default function Navbar() {
 
         <div className="nav__actions">
           <Link to="/tai-khoan" className="nav__icon interactive" aria-label="Tài khoản">
-            {user ? <span className="nav__avatar">{user.name.charAt(0).toUpperCase()}</span> : '👤'}
+            {user ? (
+              user.avatar ? (
+                <img className="nav__avatar" src={user.avatar} alt={user.name} style={{ objectFit: "cover" }} />
+              ) : (
+                <span className="nav__avatar">{user.name.charAt(0).toUpperCase()}</span>
+              )
+            ) : '👤'}
           </Link>
           <Link to="/gio-hang" className="nav__icon nav__cart interactive" aria-label="Giỏ hàng">
             🛍️

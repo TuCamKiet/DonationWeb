@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     firebase_project_id: str | None = None
     cors_origins: list[str] = ["http://localhost:5173"]
 
+    cloudinary_cloud_name: str | None = None
+    cloudinary_api_key: str | None = None
+    cloudinary_api_secret: str | None = None
+
     @property
     def async_database_url(self) -> str:
         """DATABASE_URL rewritten for asyncpg.

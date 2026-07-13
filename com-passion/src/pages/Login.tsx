@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -64,12 +64,6 @@ export default function Login() {
         }
 
         const trimmedPassword = password.trim();
-        if (trimmedPassword.length < 8) {
-          setError(
-            "Mật khẩu phải dài hơn hoặc bằng 8 ký tự và không được chỉ chứa khoảng trắng.",
-          );
-          return;
-        }
 
         if (view === "register" && trimmedPassword !== confirmPassword.trim()) {
           setError("Mật khẩu xác nhận không khớp.");
@@ -106,6 +100,27 @@ export default function Login() {
       ) {
         setError(
           "Bạn đã đăng nhập sai quá nhiều lần. Vui lòng chờ một lát rồi thử lại hoặc sử dụng Quên mật khẩu.",
+        );
+      } else if (
+        err.code === "auth/email-already-in-use" ||
+        (err.message && err.message.includes("email-already-in-use"))
+      ) {
+        setError(
+          "Email này đã được đăng ký. Vui lòng quay lại màn hình Đăng nhập hoặc sử dụng email khác.",
+        );
+      } else if (
+        err.code === "auth/invalid-email" ||
+        (err.message && err.message.includes("invalid-email"))
+      ) {
+        setError(
+          "Địa chỉ email không hợp lệ. Vui lòng kiểm tra lại định dạng email.",
+        );
+      } else if (
+        err.code === "auth/weak-password" ||
+        (err.message && err.message.includes("weak-password"))
+      ) {
+        setError(
+          "Mật khẩu quá yếu. Vui lòng sử dụng mật khẩu an toàn hơn.",
         );
       } else {  
         // Firebase throws specific error codes we can catch here or in api.ts
@@ -501,3 +516,4 @@ export default function Login() {
     </section>
   );
 }
+

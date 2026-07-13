@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { api } from '../lib/api';
 import ReportCard from '../components/ReportCard';
 import { useApi } from '../lib/useApi';
@@ -106,3 +106,4 @@ export default function Transparency() {
     </>
   );
 }
+

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth, badgeFor } from "../context/AuthContext";
 import { formatVND } from "../data/types";
 import { Loading } from "../components/Status";
+import AvatarUploader from "../components/AvatarUploader";
+import { api } from "../lib/api";
 import { SkeletonAccount } from "../components/Skeleton";
 import {
   Heart,
@@ -15,7 +17,7 @@ import {
   ShieldCheck,
   ArrowRight,
   Edit2,
-  X,
+  CheckCircle,
 } from "lucide-react";
 
 const allBadges = [
@@ -55,7 +57,7 @@ export default function Account() {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editName, setEditName] = useState("");
-  const [editAvatar, setEditAvatar] = useState("");
+  const [editAvatar, setEditAvatar] = useState<string | File>("");
   const [editError, setEditError] = useState("");
   const [editSuccess, setEditSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -65,22 +67,44 @@ export default function Account() {
   const [showAllOrders, setShowAllOrders] = useState(false);
 
   useEffect(() => {
-    if (user && isEditModalOpen) {
-      setEditName(user.name);
-      setEditAvatar(user.avatar || "");
+    if (isEditModalOpen) {
+      if (user) {
+        setEditName(user.name);
+        setEditAvatar(user.avatar || "");
+      }
       setEditError("");
       setEditSuccess(false);
       setResetSent(false);
     }
-  }, [user, isEditModalOpen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditModalOpen]);
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!editName.trim()) {
+      setEditError("Tên hiển thị không hợp lệ.");
+      return;
+    }
     setEditError("");
     setIsSaving(true);
     try {
-      if (editName !== user?.name || editAvatar !== (user?.avatar || "")) {
-        await updateUserProfile(editName, editAvatar);
+      let finalAvatarUrl = user?.avatar || "";
+      
+      if (editAvatar && editAvatar !== user?.avatar && typeof editAvatar !== "string") {
+        try {
+          const res = await api.uploadImage(editAvatar);
+          finalAvatarUrl = res.url;
+        } catch (err: any) {
+          setEditError("Lỗi tải ảnh lên: " + (err.message || String(err)));
+          setIsSaving(false);
+          return;
+        }
+      } else if (typeof editAvatar === "string") {
+        finalAvatarUrl = editAvatar;
+      }
+
+      if (editName !== user?.name || finalAvatarUrl !== (user?.avatar || "")) {
+        await updateUserProfile(editName, finalAvatarUrl);
       }
 
       setEditSuccess(true);
@@ -810,50 +834,51 @@ export default function Account() {
       </div>
 
       {/* Edit Profile Modal */}
-      {isEditModalOpen &&
-        createPortal(
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              background: "rgba(0,0,0,0.5)",
-              zIndex: 1000,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "1rem",
-            }}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {isEditModalOpen && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                if (!isSaving) setIsEditModalOpen(false);
+              }}
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                background: "rgba(0,0,0,0.5)",
+                zIndex: 1000,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "1rem",
+                boxSizing: "border-box",
+              }}
+            >
+              <motion.div
+                onClick={(e) => e.stopPropagation()}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
               style={{
                 background: "var(--surface)",
-                padding: "2rem",
+                padding: "1.5rem",
                 borderRadius: "var(--radius-lg)",
                 width: "100%",
-                maxWidth: "500px",
+                maxWidth: "700px",
+                maxHeight: "96vh",
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "column",
                 position: "relative",
                 boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
               }}
             >
-              <button
-                onClick={() => setIsEditModalOpen(false)}
-                style={{
-                  position: "absolute",
-                  top: "1.5rem",
-                  right: "1.5rem",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                <X size={24} color="var(--text-muted)" />
-              </button>
-              <h2 style={{ marginBottom: "1.5rem", fontSize: "1.8rem" }}>
+              <h2 style={{ marginBottom: "1rem", fontSize: "1.5rem" }}>
                 Chỉnh sửa hồ sơ
               </h2>
               {editError && (
@@ -900,134 +925,139 @@ export default function Account() {
                     display: "flex",
                     flexDirection: "column",
                     gap: "1rem",
+                    flex: 1,
+                    overflow: "hidden"
                   }}
                 >
-                  <label>
-                    <strong
-                      style={{ display: "block", marginBottom: "0.5rem" }}
-                    >
-                      Tên hiển thị
-                    </strong>
-                    <input
-                      className="input"
-                      type="text"
-                      required
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    <strong
-                      style={{ display: "block", marginBottom: "0.5rem" }}
-                    >
-                      Đường dẫn ảnh đại diện (Tùy chọn)
-                    </strong>
-                    <input
-                      className="input"
-                      type="url"
-                      placeholder="https://..."
-                      value={editAvatar}
-                      onChange={(e) => setEditAvatar(e.target.value)}
-                    />
-                  </label>
-                  <hr
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
+                    <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                        <label>
+                          <strong
+                            style={{ display: "block", marginBottom: "0.25rem", fontSize: "0.95rem" }}
+                          >
+                            Tên hiển thị
+                          </strong>
+                          <input
+                            className="input"
+                            type="text"
+                            required
+                            value={editName}
+                            onChange={(e) => setEditName(e.target.value)}
+                            disabled={isSaving}
+                            style={{
+                              opacity: isSaving ? 0.6 : 1,
+                            }}
+                          />
+                        </label>
+                        <h3
+                          style={{
+                            fontSize: "1rem",
+                            color: "var(--green-700)",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                            margin: "0.5rem 0 0 0"
+                          }}
+                        >
+                          <ShieldCheck size={16} /> Bảo mật
+                        </h3>
+                      </div>
+                      
+                      <div style={{ marginTop: "auto", paddingTop: "0.5rem" }}>
+                        {!resetSent ? (
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              setIsResetting(true);
+                              setEditError("");
+                              try {
+                                await resetPassword(user.email);
+                                setResetSent(true);
+                              } catch (err: any) {
+                                setEditError("Lỗi khi gửi email: " + err.message);
+                              } finally {
+                                setIsResetting(false);
+                              }
+                            }}
+                            disabled={isResetting || isSaving}
+                            className="btn btn--light interactive"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              gap: "0.5rem",
+                              padding: "0.6rem",
+                              width: "100%",
+                              background: "var(--cream)",
+                              border: "1px solid var(--border)",
+                              color: "var(--text)",
+                              fontWeight: 500,
+                              fontSize: "0.95rem",
+                              opacity: (isResetting || isSaving) ? 0.6 : 1,
+                              pointerEvents: (isResetting || isSaving) ? "none" : "auto",
+                            }}
+                          >
+                            {isResetting ? "Đang gửi..." : "Gửi email tạo mật khẩu mới"}
+                          </button>
+                        ) : (
+                          <div style={{ color: "var(--green-700)", fontSize: "0.9rem", display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.6rem", background: "var(--green-50)", borderRadius: "var(--radius-sm)" }}>
+                            <CheckCircle size={16} /> Đã gửi email khôi phục!
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                      <strong style={{ display: "block", fontSize: "0.95rem" }}>
+                        Ảnh đại diện
+                      </strong>
+                      <AvatarUploader value={editAvatar} onChange={setEditAvatar} disabled={isSaving} />
+                    </div>
+                  </div>
+
+                  <div
                     style={{
-                      margin: "1rem 0",
-                      border: "none",
-                      borderTop: "1px dashed var(--border)",
-                    }}
-                  />
-                  <h3
-                    style={{
-                      fontSize: "1.2rem",
-                      color: "var(--green-700)",
                       display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
+                      gap: "1rem",
+                      marginTop: "auto",
+                      borderTop: "1px solid var(--border)",
+                      paddingTop: "1rem"
                     }}
                   >
-                    <ShieldCheck size={20} /> Bảo mật
-                  </h3>
-
-                  {!resetSent ? (
                     <button
                       type="button"
-                      onClick={async () => {
-                        setIsResetting(true);
-                        setEditError("");
-                        try {
-                          // Import resetPassword from useAuth? Wait, resetPassword is not destructured at the top. Let's make sure it is!
-                          // I will handle it in the next chunk.
-                          await resetPassword(user.email);
-                          setResetSent(true);
-                        } catch (err: any) {
-                          setEditError("Lỗi khi gửi email: " + err.message);
-                        } finally {
-                          setIsResetting(false);
-                        }
-                      }}
-                      disabled={isResetting}
-                      className="btn btn--light interactive"
+                      className="btn interactive"
+                      onClick={() => setIsEditModalOpen(false)}
+                      disabled={isSaving}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "0.5rem",
-                        padding: "0.8rem",
-                        width: "100%",
-                        background: "var(--cream)",
+                        flex: 1,
+                        background: "none",
                         border: "1px solid var(--border)",
                         color: "var(--text)",
-                        fontWeight: 500,
+                        opacity: isSaving ? 0.6 : 1,
+                        pointerEvents: isSaving ? "none" : "auto",
                       }}
                     >
-                      {isResetting
-                        ? "Đang gửi..."
-                        : "📧 Gửi email yêu cầu đổi mật khẩu"}
+                      Hủy bỏ
                     </button>
-                  ) : (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      style={{
-                        padding: "1rem",
-                        background: "var(--green-50)",
-                        border: "1px solid var(--green-200)",
-                        borderRadius: "var(--radius-sm)",
-                        color: "var(--green-800)",
-                        fontSize: "0.95rem",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        overflow: "hidden",
-                      }}
+                    <button
+                      type="submit"
+                      className="btn btn--accent interactive"
+                      disabled={isSaving}
+                      style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}
                     >
-                      <span style={{ fontSize: "1.2rem" }}>✨</span>
-                      <div>
-                        Đã gửi đường link đổi mật khẩu qua email! Vui lòng kiểm
-                        tra hộp thư của bạn.
-                      </div>
-                    </motion.div>
-                  )}
-
-                  <button
-                    type="submit"
-                    className="btn btn--accent interactive"
-                    style={{
-                      marginTop: "1rem",
-                      width: "100%",
-                      justifyContent: "center",
-                    }}
-                    disabled={isSaving}
-                  >
-                    {isSaving ? "Đang lưu..." : "Lưu thay đổi"}
-                  </button>
+                      {isSaving ? "Đang lưu..." : "Lưu thay đổi"}
+                    </button>
+                  </div>
                 </form>
               )}
             </motion.div>
-          </div>,
-          document.body,
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </section>
   );
 }

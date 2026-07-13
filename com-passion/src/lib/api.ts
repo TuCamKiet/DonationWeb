@@ -50,7 +50,8 @@ async function request<T>(path: string, opts: RequestOptions = {}): Promise<T> {
   }
 
   const headers: Record<string, string> = {};
-  if (opts.body !== undefined) headers['Content-Type'] = 'application/json';
+  const isFormData = opts.body instanceof FormData;
+  if (opts.body !== undefined && !isFormData) headers['Content-Type'] = 'application/json';
   const token = getToken();
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
@@ -66,7 +67,7 @@ async function request<T>(path: string, opts: RequestOptions = {}): Promise<T> {
     res = await fetch(url, {
       method,
       headers,
-      body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+      body: opts.body !== undefined ? (isFormData ? opts.body as any : JSON.stringify(opts.body)) : undefined,
     });
   } catch {
     throw new ApiError(0, 'Không thể kết nối tới máy chủ. Vui lòng kiểm tra mạng và thử lại.');
@@ -93,6 +94,12 @@ async function request<T>(path: string, opts: RequestOptions = {}): Promise<T> {
 }
 
 export const api = {
+  // Upload
+  uploadImage: (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return request<{ url: string }>('/upload', { method: 'POST', body: formData, auth: true });
+  },
   // Auth
   loginWithFirebase: (idToken: string) =>
     request<AuthResponse>('/auth/firebase', { method: 'POST', body: { idToken } }),
