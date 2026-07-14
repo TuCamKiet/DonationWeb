@@ -139,7 +139,7 @@ export default function Home() {
                   "Ảnh cô chú vùng cao bên những chiếc giỏ đan tay",
               }}
               ratio="4 / 5"
-              imgUrl={featuredState.data?.find((p) => p.id === "p1")?.imageUrl}
+              imgUrl={storiesState.data?.[0]?.imageUrl}
             />
             <motion.div
               className="hero__floatcard card"

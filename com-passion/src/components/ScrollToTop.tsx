@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUp } from "lucide-react";
 
 export default function ScrollToTop() {
   const { pathname } = useLocation();
@@ -15,7 +15,7 @@ export default function ScrollToTop() {
         // @ts-ignore
         window.lenis.scrollTo(0, { immediate: false, duration: 1.2 });
       } else {
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       }
     }, 50);
   }, [pathname]);
@@ -30,8 +30,8 @@ export default function ScrollToTop() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
@@ -40,7 +40,7 @@ export default function ScrollToTop() {
       // @ts-ignore
       window.lenis.scrollTo(0, { immediate: false, duration: 1.2 });
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -54,21 +54,21 @@ export default function ScrollToTop() {
           onClick={scrollToTop}
           className="interactive"
           style={{
-            position: 'fixed',
-            bottom: '2rem',
-            right: '2rem',
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            backgroundColor: 'var(--green-700)',
-            color: 'white',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: 'var(--shadow-md)',
+            position: "fixed",
+            bottom: "2rem",
+            right: "2rem",
+            width: "48px",
+            height: "48px",
+            borderRadius: "50%",
+            backgroundColor: "var(--green-700)",
+            color: "white",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "var(--shadow-md)",
             zIndex: 99,
-            cursor: 'none'
+            cursor: "none",
           }}
           aria-label="Lên đầu trang"
         >
