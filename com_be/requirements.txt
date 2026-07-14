@@ -57,3 +57,4 @@ passlib[bcrypt]
 bcrypt
 google-auth
 requests
+firebase-admin
