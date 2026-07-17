@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { MailCheck, CheckCircle, Heart, Sparkles } from "lucide-react";
+import { MailCheck, Heart, Sparkles } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { api, errorMessage } from "../lib/api";
