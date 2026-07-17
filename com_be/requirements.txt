@@ -58,5 +58,3 @@ bcrypt
 google-auth
 requests
 firebase-admin
-resend
-apscheduler

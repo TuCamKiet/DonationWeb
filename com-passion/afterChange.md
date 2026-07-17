@@ -38,4 +38,5 @@ Phần Giao diện đã được nâng cấp đồ sộ với hàng loạt Compo
   - Thêm logic tự động kiểm tra `endsWith('/')` và cắt gọt chuỗi (`slice`) để đảm bảo các Endpoint (ví dụ `//api/impact/stats`) không bị lỗi 404.
 - **Cập nhật Biến Môi Trường (`.env.example`):** Bổ sung cụ thể mẫu khai báo API Backend và toàn bộ 7 khóa cấu hình Firebase. Bổ sung thư viện `firebase` và `react-to-print` vào `package.json`.
 
-
+## 4. Quản lý Giỏ Hàng & Đặt Hàng (Cart)
+- Bổ sung thông báo nhắc nhở cực kỳ tinh tế ở trang thành công (`Cart.tsx`): Sau khi gọi API `/orders` tạo đơn thành công, giao diện sẽ xuất hiện thêm một hộp thoại nhỏ xinh xắn (sử dụng màu sắc `var(--color-surface)` và `var(--color-accent)` tiệp với theme dự án) để nhắc người dùng check hộp thư email nhận hoá đơn điện tử. Tính năng này được tối ưu 100% bằng CSS/HTML DOM chuẩn, không làm thay đổi trạng thái state và hoàn toàn không ảnh hưởng tới logic giỏ hàng cũ.

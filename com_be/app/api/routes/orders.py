@@ -1,7 +1,7 @@
 import random
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, BackgroundTasks
 from sqlalchemy import func, select, update
 from sqlalchemy.orm import selectinload
 
@@ -9,6 +9,7 @@ from app.api.deps import CurrentUserDep, SessionDep
 from app.models import Order, OrderItem, Product, ImpactStat, Report
 from app.schemas.order import OrderCreate, OrderOut
 from app.schemas.user import ContributionOut
+from app.core.mailer import send_order_confirmation_email
 
 router = APIRouter(tags=["orders"])
 
@@ -34,7 +35,7 @@ async def list_orders(current_user: CurrentUserDep, session: SessionDep) -> list
 
 
 @router.post("/orders", response_model=OrderOut, status_code=201)
-async def create_order(payload: OrderCreate, current_user: CurrentUserDep, session: SessionDep) -> Order:
+async def create_order(payload: OrderCreate, current_user: CurrentUserDep, session: SessionDep, background_tasks: BackgroundTasks) -> Order:
     # Merge duplicate product lines so each product gets a single stock update.
     quantities: dict[str, int] = {}
     for item in payload.items:
@@ -154,6 +155,11 @@ async def create_order(payload: OrderCreate, current_user: CurrentUserDep, sessi
     report.summary = f"Tháng {current_date.month} ghi nhận {orders_count} đơn hàng với {items_count} sản phẩm. Toàn bộ dòng tiền được phân bổ và công khai bên dưới."
 
     await session.commit()
+    
+    # Send order confirmation email in background
+    if current_user.email:
+        background_tasks.add_task(send_order_confirmation_email, current_user.email, order, current_user)
+        
     return order
 
 
