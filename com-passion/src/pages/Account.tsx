@@ -162,16 +162,20 @@ export default function Account() {
   const badge = badgeFor(totalContribution);
   const meals = Math.floor(totalContribution / 25000); // ~25k/bữa, ước tính
 
-  const filteredOrders = filterDate 
-    ? user.orders.filter(o => {
+  const filteredOrders = filterDate
+    ? user.orders.filter((o) => {
         const d = new Date(o.date);
-        return d.getFullYear() === filterDate.getFullYear() &&
-               d.getMonth() === filterDate.getMonth() &&
-               d.getDate() === filterDate.getDate();
+        return (
+          d.getFullYear() === filterDate.getFullYear() &&
+          d.getMonth() === filterDate.getMonth() &&
+          d.getDate() === filterDate.getDate()
+        );
       })
     : user.orders;
-  
-  const displayedOrders = showAllOrders ? filteredOrders : filteredOrders.slice(0, 2);
+
+  const displayedOrders = showAllOrders
+    ? filteredOrders
+    : filteredOrders.slice(0, 2);
 
   return (
     <section
@@ -427,7 +431,14 @@ export default function Account() {
                 Tổng đóng góp
               </span>
             </div>
-            <strong style={{ fontSize: "1.8rem", color: "var(--green-700)" }}>
+            <strong
+              style={{
+                fontSize: "1.8rem",
+                color: "var(--green-700)",
+                wordBreak: "break-word",
+                overflowWrap: "anywhere",
+              }}
+            >
               {formatVND(totalContribution)}
             </strong>
           </motion.div>
@@ -542,23 +553,35 @@ export default function Account() {
             variants={staggerContainer}
             transition={{ delay: 0.4 }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: "1.5rem", flexWrap: 'wrap', gap: '1rem' }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "1.5rem",
+                flexWrap: "wrap",
+                gap: "1rem",
+              }}
+            >
               <motion.h2
                 variants={fadeUp}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  margin: 0
+                  margin: 0,
                 }}
               >
                 <Package size={24} color="var(--green-700)" /> Lịch sử đơn hàng
               </motion.h2>
               <motion.div variants={fadeUp}>
-                <CalendarPicker selectedDate={filterDate} onChange={setFilterDate} />
+                <CalendarPicker
+                  selectedDate={filterDate}
+                  onChange={setFilterDate}
+                />
               </motion.div>
             </div>
-            
+
             {filteredOrders.length === 0 ? (
               <motion.div
                 className="card"
@@ -575,23 +598,29 @@ export default function Account() {
                   className="muted"
                   style={{ marginTop: "1rem", fontSize: "1.1rem" }}
                 >
-                  Chưa có đơn hàng nào{filterDate ? ` trong ngày ${filterDate.toLocaleDateString('vi-VN')}` : ''}.
+                  Chưa có đơn hàng nào
+                  {filterDate
+                    ? ` trong ngày ${filterDate.toLocaleDateString("vi-VN")}`
+                    : ""}
+                  .
                   <br />
-                  {filterDate ? 'Hãy thử chọn một ngày khác hoặc bỏ lọc để xem toàn bộ lịch sử.' : 'Hãy dạo quanh cửa hàng và chọn cho mình một món đồ thủ công nhé!'}
+                  {filterDate
+                    ? "Hãy thử chọn một ngày khác hoặc bỏ lọc để xem toàn bộ lịch sử."
+                    : "Hãy dạo quanh cửa hàng và chọn cho mình một món đồ thủ công nhé!"}
                 </p>
                 {!filterDate && (
                   <Link
-                  to="/shop"
-                  className="btn btn--accent interactive"
-                  style={{
-                    marginTop: "1.5rem",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                  }}
-                >
-                  Đến Cửa hàng <ArrowRight size={16} />
-                </Link>
+                    to="/shop"
+                    className="btn btn--accent interactive"
+                    style={{
+                      marginTop: "1.5rem",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    Đến Cửa hàng <ArrowRight size={16} />
+                  </Link>
                 )}
               </motion.div>
             ) : (
@@ -886,6 +915,7 @@ export default function Account() {
               }}
             >
               <motion.div
+                className="edit-profile-modal"
                 onClick={(e) => e.stopPropagation()}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -900,70 +930,67 @@ export default function Account() {
                   borderRadius: "var(--radius-lg)",
                   width: "100%",
                   maxWidth: "700px",
-                  maxHeight: "96vh",
-                  overflow: "hidden",
                   display: "flex",
                   flexDirection: "column",
                   position: "relative",
                   boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
                 }}
               >
-                <h2 style={{ marginBottom: "1rem", fontSize: "1.5rem" }}>
-                  Chỉnh sửa hồ sơ
-                </h2>
-                {editError && (
-                  <div
-                    style={{
-                      marginBottom: "1rem",
-                      padding: "1rem",
-                      background: "#fee2e2",
-                      color: "#991b1b",
-                      borderRadius: "var(--radius-sm)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    {editError}
-                  </div>
-                )}
-
-                {editSuccess ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    style={{ textAlign: "center", padding: "3rem 1rem" }}
-                  >
-                    <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>
-                      🌿
-                    </div>
-                    <h3
-                      style={{
-                        color: "var(--green-700)",
-                        fontSize: "1.5rem",
-                        marginBottom: "0.5rem",
-                      }}
-                    >
-                      Đã cập nhật hồ sơ!
-                    </h3>
-                    <p className="muted">
-                      Những thay đổi của bạn đã được lưu lại.
-                    </p>
-                  </motion.div>
-                ) : (
-                  <form
-                    onSubmit={handleSaveProfile}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "1rem",
-                      flex: 1,
-                      overflow: "hidden",
-                    }}
-                  >
+                  <h2 style={{ marginBottom: "1rem", fontSize: "1.5rem" }}>
+                    Chỉnh sửa hồ sơ
+                  </h2>
+                  {editError && (
                     <div
                       style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(250px, 1fr))",
+                        marginBottom: "1rem",
+                        padding: "1rem",
+                        background: "#fee2e2",
+                        color: "#991b1b",
+                        borderRadius: "var(--radius-sm)",
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      {editError}
+                    </div>
+                  )}
+
+                  {editSuccess ? (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      style={{ textAlign: "center", padding: "3rem 1rem" }}
+                    >
+                      <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>
+                        🌿
+                      </div>
+                      <h3
+                        style={{
+                          color: "var(--green-700)",
+                          fontSize: "1.5rem",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
+                        Đã cập nhật hồ sơ!
+                      </h3>
+                      <p className="muted">
+                        Những thay đổi của bạn đã được lưu lại.
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <form
+                      onSubmit={handleSaveProfile}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem",
+                        flex: 1,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns:
+                            "repeat(auto-fit, minmax(250px, 1fr))",
                         gap: "1rem",
                       }}
                     >

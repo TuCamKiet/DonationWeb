@@ -119,10 +119,8 @@ export default function Login() {
         err.code === "auth/weak-password" ||
         (err.message && err.message.includes("weak-password"))
       ) {
-        setError(
-          "Mật khẩu quá yếu. Vui lòng sử dụng mật khẩu an toàn hơn.",
-        );
-      } else {  
+        setError("Mật khẩu quá yếu. Vui lòng sử dụng mật khẩu an toàn hơn.");
+      } else {
         // Firebase throws specific error codes we can catch here or in api.ts
         setError(err.message || "Đã có lỗi xảy ra. Vui lòng thử lại.");
       }
@@ -345,7 +343,7 @@ export default function Login() {
                     onClick={() => setShowPassword(!showPassword)}
                     style={{
                       position: "absolute",
-                      right: "0.8rem",
+                      right: 0,
                       top: "50%",
                       transform: "translateY(-50%)",
                       background: "none",
@@ -399,7 +397,7 @@ export default function Login() {
                       onClick={() => setShowPassword(!showPassword)}
                       style={{
                         position: "absolute",
-                        right: "0.8rem",
+                        right: 0,
                         top: "50%",
                         transform: "translateY(-50%)",
                         background: "none",
@@ -516,4 +514,3 @@ export default function Login() {
     </section>
   );
 }
-

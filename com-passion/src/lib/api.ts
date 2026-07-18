@@ -11,9 +11,9 @@ import type {
 } from "../data/types";
 
 //! DO NOT DELETE
-const RAW_URL = (import.meta.env.VITE_API_BASE_URL ??
-  "http://localhost:8000") as string;
-//! const RAW_URL = "http://localhost:8000" as string;
+// const RAW_URL = (import.meta.env.VITE_API_BASE_URL ??
+//   "http://localhost:8000") as string;
+const RAW_URL = "http://localhost:8000" as string;
 const BASE_URL = RAW_URL.endsWith("/") ? RAW_URL.slice(0, -1) : RAW_URL;
 const TOKEN_KEY = "compassion.token";
 

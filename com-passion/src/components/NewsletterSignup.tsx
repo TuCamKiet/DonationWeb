@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
 
 export default function NewsletterSignup() {
   const { user } = useAuth();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
 
   useEffect(() => {
@@ -24,14 +24,14 @@ export default function NewsletterSignup() {
         <span className="eyebrow">Thư đầu tháng</span>
         <h3>Nhận câu chuyện của tháng qua email</h3>
         <p className="muted">
-          Đầu mỗi tháng, chúng tôi gửi bạn sản phẩm mới, câu chuyện của tháng trước và
-          tổng số tiền đã đóng góp cho cộng đồng.
+          Đầu mỗi tháng, chúng tôi gửi bạn sản phẩm mới, câu chuyện của tháng
+          trước và tổng số tiền đã đóng góp cho cộng đồng.
         </p>
       </div>
 
       <AnimatePresence mode="wait">
         {done ? (
-          <motion.p 
+          <motion.p
             key="done"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -40,58 +40,95 @@ export default function NewsletterSignup() {
             🌿 Cảm ơn bạn! Hẹn gặp lại trong thư đầu tháng tới.
           </motion.p>
         ) : (
-          <motion.form 
+          <motion.form
             key="form"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, y: -10 }}
-            className="newsletter__form" 
+            className="newsletter__form"
             onSubmit={submit}
           >
             {user ? (
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '1rem', 
-                background: 'rgba(255, 255, 255, 0.7)', 
-                padding: '0.8rem 1rem', 
-                borderRadius: 'var(--radius)',
-                border: '1px solid #fff',
-                boxShadow: '0 4px 15px -5px rgba(0,0,0,0.05)',
-                flexWrap: 'wrap'
-              }}>
-                <div style={{
-                  width: '42px', height: '42px', 
-                  borderRadius: '50%', 
-                  background: 'var(--green-50)', 
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '1.2rem',
-                  border: '1px solid var(--green-200)'
-                }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  background: "rgba(255, 255, 255, 0.7)",
+                  padding: "0.8rem 1rem",
+                  borderRadius: "var(--radius)",
+                  border: "1px solid #fff",
+                  boxShadow: "0 4px 15px -5px rgba(0,0,0,0.05)",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div
+                  style={{
+                    width: "42px",
+                    height: "42px",
+                    borderRadius: "50%",
+                    background: "var(--green-50)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.2rem",
+                    border: "1px solid var(--green-200)",
+                  }}
+                >
                   💌
                 </div>
-                <div style={{ flex: '1 1 min-content' }}>
-                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Tài khoản của bạn</p>
-                  <p style={{ margin: 0, fontWeight: 600, color: 'var(--green-900)' }}>
+                <div style={{ flex: "1 1 min-content" }}>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "0.8rem",
+                      color: "var(--text-muted)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Tài khoản của bạn
+                  </p>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontWeight: 600,
+                      color: "var(--green-900)",
+                    }}
+                  >
                     {(() => {
-                      const atIdx = user.email.indexOf('@');
-                      if (atIdx === -1) return <span className="email-username">{user.email}</span>;
-                      
+                      const atIdx = user.email.indexOf("@");
+                      if (atIdx === -1)
+                        return (
+                          <span className="email-username">{user.email}</span>
+                        );
+
                       const username = user.email.slice(0, atIdx);
                       const domain = user.email.slice(atIdx);
-                      
+
                       return (
                         <>
                           <span className="email-username">{username}</span>
-                          {domain.split(/([@.])/).map((char, i) => 
-                            (char === '@' || char === '.') ? <span key={i} className="email-break">{char}</span> : char
+                          {domain.split(/([@.])/).map((char, i) =>
+                            char === "@" || char === "." ? (
+                              <span key={i} className="email-break">
+                                {char}
+                              </span>
+                            ) : (
+                              char
+                            ),
                           )}
                         </>
                       );
                     })()}
                   </p>
                 </div>
-                <button className="btn btn--accent interactive" type="submit" style={{ padding: '0.75rem 1.6rem', whiteSpace: 'nowrap' }}>
+                <button
+                  className="btn btn--accent interactive"
+                  type="submit"
+                  style={{ padding: "0.75rem 1.6rem" }}
+                >
                   Đăng ký ngay
                 </button>
               </div>
@@ -106,9 +143,18 @@ export default function NewsletterSignup() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   aria-label="Email của bạn"
-                  style={{ borderRadius: 'var(--radius-pill)', padding: '0.85rem 1.5rem' }}
+                  style={{
+                    borderRadius: "var(--radius-pill)",
+                    padding: "0.85rem 1.5rem",
+                  }}
                 />
-                <button className="btn btn--accent interactive" type="submit" style={{ padding: '0.85rem 1.8rem' }}>Đăng ký</button>
+                <button
+                  className="btn btn--accent interactive"
+                  type="submit"
+                  style={{ padding: "0.85rem 1.8rem" }}
+                >
+                  Đăng ký
+                </button>
               </>
             )}
           </motion.form>

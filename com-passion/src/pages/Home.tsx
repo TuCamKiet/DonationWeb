@@ -74,7 +74,7 @@ export default function Home() {
             <motion.div variants={fadeUp} className="hero__trust">
               {statsState.loading ? (
                 <div
-                  style={{ display: "flex", gap: "1rem", alignItems: "center" }}
+                  style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}
                 >
                   <Skeleton
                     style={{

@@ -125,7 +125,7 @@ export default function CalendarPicker({ selectedDate, onChange }: CalendarPicke
               
               {daysArray.map((date, idx) => {
                 if (!date) {
-                  return <div key={`empty-${idx}`} className="calendar-day empty" />;
+                  return <div key={`empty-${idx}`} className="calendar-day calendar-day--empty" />;
                 }
                 const isSelected = isSameDay(selectedDate, date);
                 const isToday = isSameDay(new Date(), date);
