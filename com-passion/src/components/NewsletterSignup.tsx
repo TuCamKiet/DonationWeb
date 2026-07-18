@@ -72,7 +72,24 @@ export default function NewsletterSignup() {
                 </div>
                 <div style={{ flex: '1 1 min-content' }}>
                   <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Tài khoản của bạn</p>
-                  <p style={{ margin: 0, fontWeight: 600, color: 'var(--green-900)' }}>{user.email}</p>
+                  <p style={{ margin: 0, fontWeight: 600, color: 'var(--green-900)' }}>
+                    {(() => {
+                      const atIdx = user.email.indexOf('@');
+                      if (atIdx === -1) return <span className="email-username">{user.email}</span>;
+                      
+                      const username = user.email.slice(0, atIdx);
+                      const domain = user.email.slice(atIdx);
+                      
+                      return (
+                        <>
+                          <span className="email-username">{username}</span>
+                          {domain.split(/([@.])/).map((char, i) => 
+                            (char === '@' || char === '.') ? <span key={i} className="email-break">{char}</span> : char
+                          )}
+                        </>
+                      );
+                    })()}
+                  </p>
                 </div>
                 <button className="btn btn--accent interactive" type="submit" style={{ padding: '0.75rem 1.6rem', whiteSpace: 'nowrap' }}>
                   Đăng ký ngay

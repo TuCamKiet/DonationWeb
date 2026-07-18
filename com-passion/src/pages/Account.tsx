@@ -1,7 +1,8 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import CalendarPicker from "../components/CalendarPicker";
 import { useAuth, badgeFor } from "../context/AuthContext";
 import { formatVND } from "../data/types";
 import AvatarUploader from "../components/AvatarUploader";
@@ -64,6 +65,7 @@ export default function Account() {
   const [isResetting, setIsResetting] = useState(false);
   const [resetSent, setResetSent] = useState(false);
   const [showAllOrders, setShowAllOrders] = useState(false);
+  const [filterDate, setFilterDate] = useState<Date | null>(null);
 
   useEffect(() => {
     if (isEditModalOpen) {
@@ -160,7 +162,16 @@ export default function Account() {
   const badge = badgeFor(totalContribution);
   const meals = Math.floor(totalContribution / 25000); // ~25k/bữa, ước tính
 
-  const displayedOrders = showAllOrders ? user.orders : user.orders.slice(0, 2);
+  const filteredOrders = filterDate 
+    ? user.orders.filter(o => {
+        const d = new Date(o.date);
+        return d.getFullYear() === filterDate.getFullYear() &&
+               d.getMonth() === filterDate.getMonth() &&
+               d.getDate() === filterDate.getDate();
+      })
+    : user.orders;
+  
+  const displayedOrders = showAllOrders ? filteredOrders : filteredOrders.slice(0, 2);
 
   return (
     <section
@@ -531,18 +542,24 @@ export default function Account() {
             variants={staggerContainer}
             transition={{ delay: 0.4 }}
           >
-            <motion.h2
-              variants={fadeUp}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                marginBottom: "1.5rem",
-              }}
-            >
-              <Package size={24} color="var(--green-700)" /> Lịch sử đơn hàng
-            </motion.h2>
-            {user.orders.length === 0 ? (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: "1.5rem", flexWrap: 'wrap', gap: '1rem' }}>
+              <motion.h2
+                variants={fadeUp}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  margin: 0
+                }}
+              >
+                <Package size={24} color="var(--green-700)" /> Lịch sử đơn hàng
+              </motion.h2>
+              <motion.div variants={fadeUp}>
+                <CalendarPicker selectedDate={filterDate} onChange={setFilterDate} />
+              </motion.div>
+            </div>
+            
+            {filteredOrders.length === 0 ? (
               <motion.div
                 className="card"
                 variants={fadeUp}
@@ -558,12 +575,12 @@ export default function Account() {
                   className="muted"
                   style={{ marginTop: "1rem", fontSize: "1.1rem" }}
                 >
-                  Chưa có đơn hàng nào.
+                  Chưa có đơn hàng nào{filterDate ? ` trong ngày ${filterDate.toLocaleDateString('vi-VN')}` : ''}.
                   <br />
-                  Hãy dạo quanh cửa hàng và chọn cho mình một món đồ thủ công
-                  nhé!
+                  {filterDate ? 'Hãy thử chọn một ngày khác hoặc bỏ lọc để xem toàn bộ lịch sử.' : 'Hãy dạo quanh cửa hàng và chọn cho mình một món đồ thủ công nhé!'}
                 </p>
-                <Link
+                {!filterDate && (
+                  <Link
                   to="/shop"
                   className="btn btn--accent interactive"
                   style={{
@@ -575,6 +592,7 @@ export default function Account() {
                 >
                   Đến Cửa hàng <ArrowRight size={16} />
                 </Link>
+                )}
               </motion.div>
             ) : (
               <div
@@ -727,7 +745,7 @@ export default function Account() {
                     </footer>
                   </motion.article>
                 ))}
-                {user.orders.length > 2 && (
+                {filteredOrders.length > 2 && (
                   <motion.div
                     variants={fadeUp}
                     style={{ textAlign: "center", marginTop: "1rem" }}
@@ -744,7 +762,7 @@ export default function Account() {
                     >
                       {showAllOrders
                         ? "Thu gọn"
-                        : `Xem thêm ${user.orders.length - 2} đơn hàng cũ hơn`}
+                        : `Xem thêm ${filteredOrders.length - 2} đơn hàng cũ hơn`}
                     </button>
                   </motion.div>
                 )}

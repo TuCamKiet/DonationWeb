@@ -40,3 +40,13 @@ Phần Giao diện đã được nâng cấp đồ sộ với hàng loạt Compo
 
 ## 4. Quản lý Giỏ Hàng & Đặt Hàng (Cart)
 - Bổ sung thông báo nhắc nhở cực kỳ tinh tế ở trang thành công (`Cart.tsx`): Sau khi gọi API `/orders` tạo đơn thành công, giao diện sẽ xuất hiện thêm một hộp thoại nhỏ xinh xắn (sử dụng màu sắc `var(--color-surface)` và `var(--color-accent)` tiệp với theme dự án) để nhắc người dùng check hộp thư email nhận hoá đơn điện tử. Tính năng này được tối ưu 100% bằng CSS/HTML DOM chuẩn, không làm thay đổi trạng thái state và hoàn toàn không ảnh hưởng tới logic giỏ hàng cũ.
+
+## 5. Tài khoản & Lịch sử đơn hàng (Account)
+- **Bộ lọc ngày tháng Custom (Calendar Filter):** Đã bổ sung tính năng "Lọc theo ngày" tại phần Lịch sử đơn hàng (`Account.tsx`). Điểm đặc biệt là thay vì dùng thẻ `<input type="date">` nhàm chán hoặc tải thêm thư viện nặng nề, một component `CalendarPicker.tsx` hoàn toàn mới đã được tự tay code 100% bằng React và Vanilla JS.
+  - Lưới lịch (Calendar Grid) được tính toán tự động dựa trên thuật toán lấy số ngày trong tháng, đi kèm sửa lỗi UI vỡ layout do xung đột CSS padding mặc định của thẻ `<button>`.
+  - Giao diện dạng Popover cực kỳ đồng bộ với hệ thống thiết kế (Design System), đi kèm Animation mượt mà bằng `framer-motion`. Popover được tối ưu Responsive toàn diện 100% cho màn hình điện thoại, tự động chuyển đổi thành full-width và căn giữa để trải nghiệm chạm vuốt (UX) hoàn hảo.
+  - Logic lọc được áp dụng linh hoạt (chỉ hiển thị mảng đơn hàng khớp với ngày được chọn), không làm ảnh hưởng tới tính năng "Xem thêm" cũ. Hiển thị tin nhắn Empty State thông minh nếu không tìm thấy đơn hàng trong ngày đó.
+
+## 6. Cải tiến và Sửa lỗi khác (Bug Fixes)
+- **Sửa lỗi hiển thị số dư dài loằng ngoằng:** Khắc phục tình trạng số tiền quỹ trên trang chủ (`Home.tsx`) bị lỗi sai số thập phân (ví dụ: `95.85499999999998 triệu`). Đã áp dụng component `CountUp` cho phần hiển thị này, giúp làm tròn đẹp mắt (`95,85 triệu`) đồng thời thêm được hiệu ứng số đếm (animated number) đồng bộ với bên dưới.
+- **Tối ưu hiển thị email trên màn hình siêu nhỏ (Mobile < 300px):** Form Newsletter (`NewsletterSignup.tsx`) bị tràn bố cục khi hiển thị các email quá dài. Đã xử lý tinh tế bằng kỹ thuật chèn ký tự khoảng trắng tàng hình (Zero-width space `\200B`) vào ngay sau ký tự `@` và dấu `.` thông qua CSS pseudo-class `::after`. Riêng phần tên người dùng (trước ký tự `@`) được bổ sung thuộc tính `word-break: break-all` để linh hoạt ngắt dòng trong trường hợp tên quá dài. Các tính năng bẻ dòng này chỉ được kích hoạt riêng cho giao diện điện thoại (Mobile Media Query) và đảm bảo email không bị đứt đoạn vô lý.

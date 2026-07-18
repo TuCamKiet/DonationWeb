@@ -178,10 +178,10 @@ export default function Home() {
               ) : (
                 <>
                   <strong style={{ color: "var(--green-800)" }}>
-                    {statsState.data?.find((s) => s.key === "funds")?.value ||
-                      86}
-                    {statsState.data?.find((s) => s.key === "funds")?.suffix ||
-                      " triệu₫"}
+                    <CountUp 
+                      to={statsState.data?.find((s) => s.key === "funds")?.value || 0} 
+                      suffix={statsState.data?.find((s) => s.key === "funds")?.suffix || " triệu₫"}
+                    />
                   </strong>
                   <span className="muted" style={{ color: "var(--clay-700)" }}>
                     {statsState.data
